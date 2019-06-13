@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.PhotoMapper">
+
+	<resultMap type="com.example.acm.entity.Photo" id="photoMap">
+		<result column="photoId" property="photoId"/>   
+		<result column="photoName" property="photoName"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="isPublic" property="isPublic"/>   
+		<result column="isEffective" property="isEffective"/>   
+		<result column="photoUrl" property="photoUrl"/>   
+	</resultMap>
+
+	<sql id="photo_field_list_alias">
+		a.photoId,
+		a.photoName,
+		a.createUser,
+		a.createDate,
+		a.isPublic,
+		a.isEffective,
+		a.photoUrl
+	</sql>
+
+	<insert id="addPhoto" useGeneratedKeys="true">
+		INSERT INTO photo 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="photo.photoId != null">photoId,</if>
+			<if test="photo.photoName != null">photoName,</if>
+			<if test="photo.createUser != null">createUser,</if>
+			<if test="photo.createDate != null">createDate,</if>
+			<if test="photo.isPublic != null">isPublic,</if>
+			<if test="photo.isEffective != null">isEffective,</if>
+			<if test="photo.photoUrl != null">photoUrl,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="photo.photoId != null">#{photo.photoId},</if>
+			<if test="photo.photoName != null">#{photo.photoName},</if>
+			<if test="photo.createUser != null">#{photo.createUser},</if>
+			<if test="photo.createDate != null">#{photo.createDate},</if>
+			<if test="photo.isPublic != null">#{photo.isPublic},</if>
+			<if test="photo.isEffective != null">#{photo.isEffective},</if>
+			<if test="photo.photoUrl != null">#{photo.photoUrl},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addPhotoList" parameterType="com.example.acm.entity.Photo">
+		INSERT INTO photo 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			photoId,
+			photoName,
+			createUser,
+			createDate,
+			isPublic,
+			isEffective,
+			photoUrl,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.photoId},
+			#{item.photoName},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.isPublic},
+			#{item.isEffective},
+			#{item.photoUrl},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				photoId = VALUES (photoId),
+		</trim>
+	</insert>
+	
+	<delete id="deletePhotoByPhotoId">
+		DELETE FROM photo WHERE photoId = #{photoId};
+	</delete>
+
+	<update id="updatePhotoByPhotoId">
+		UPDATE photo
+		<set>
+			<if test="photo.photoId != null">photoId=#{photo.photoId},</if>
+			<if test="photo.photoName != null">photoName=#{photo.photoName},</if>
+			<if test="photo.createUser != null">createUser=#{photo.createUser},</if>
+			<if test="photo.createDate != null">createDate=#{photo.createDate},</if>
+			<if test="photo.isPublic != null">isPublic=#{photo.isPublic},</if>
+			<if test="photo.isEffective != null">isEffective=#{photo.isEffective},</if>
+			<if test="photo.photoUrl != null">photoUrl=#{photo.photoUrl},</if>
+		</set>
+		WHERE photoId = #{photoId};	
+	</update>
+	
+	<select id="getPhotoByPhotoId" resultType="com.example.acm.entity.Photo">
+		SELECT 
+			<include refid="photo_field_list_alias"/> 
+		FROM 
+			photo a
+		WHERE 
+			photoId = #{photoId}
+		LIMIT 1;
+	</select>
+
+	<select id="findPhotoListByPhotoId" resultType="com.example.acm.entity.Photo">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a
+		<where>
+			<if test="photoId != null">
+				a.photoId = #{photoId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findPhoto2MapListByPhotoId" resultType="java.util.Map">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a
+		<where>
+			<if test="photoId != null">
+				a.photoId = #{photoId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findPhotoList" resultType="com.example.acm.entity.Photo">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a;		
+	</select>
+	
+	<select id="findPhoto2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a;		
+	</select>
+	
+	<select id="countPhotoListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findPhotoListByQuery" resultType="com.example.acm.entity.Photo">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countPhotoMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findPhotoMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="photo_field_list_alias"/>
+		FROM 
+			photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="findPhotoMapListByAlbumId" resultType="java.util.Map">
+		SELECT
+		a.*
+		FROM
+		photo a INNER JOIN album_photo b on a.photoId = b.photoId
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+			<if test="map.albumId != null ">
+				AND b.albumId=#{map.albumId}
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+			ORDER BY
+			a.${map.order} ${map.aOrS}
+		</if>
+		<if test="map.start != null ">
+			limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="countPhotoMapListByAlbumId" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		photo a INNER JOIN album_photo b
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			AND a.photoId=b.photoId
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+			<if test="map.isEffective != null ">
+				AND b.isEffective=#{map.isEffective}
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+			<if test="map.albumId != null ">
+				AND b.albumId=#{map.albumId}
+			</if>
+		</trim>
+
+	</select>
+</mapper>

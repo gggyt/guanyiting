@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.CommentMapper">
+
+	<resultMap type="com.example.acm.entity.Comment" id="commentMap">
+		<result column="commentId" property="commentId"/>   
+		<result column="invitationId" property="invitationId"/>   
+		<result column="p_commentId" property="pCommentid"/>   
+		<result column="commentBody" property="commentBody"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="comment_field_list_alias">
+		a.commentId,
+		a.invitationId,
+		a.p_commentId,
+		a.commentBody,
+		a.createUser,
+		a.createDate,
+		a.isEffective
+	</sql>
+
+	<insert id="addComment" useGeneratedKeys="true">
+		INSERT INTO comment 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="comment.commentId != null">commentId,</if>
+			<if test="comment.invitationId != null">invitationId,</if>
+			<if test="comment.pCommentid != null">p_commentId,</if>
+			<if test="comment.commentBody != null">commentBody,</if>
+			<if test="comment.createUser != null">createUser,</if>
+			<if test="comment.createDate != null">createDate,</if>
+			<if test="comment.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="comment.commentId != null">#{comment.commentId},</if>
+			<if test="comment.invitationId != null">#{comment.invitationId},</if>
+			<if test="comment.pCommentid != null">#{comment.pCommentid},</if>
+			<if test="comment.commentBody != null">#{comment.commentBody},</if>
+			<if test="comment.createUser != null">#{comment.createUser},</if>
+			<if test="comment.createDate != null">#{comment.createDate},</if>
+			<if test="comment.isEffective != null">#{comment.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addCommentList" parameterType="com.example.acm.entity.Comment">
+		INSERT INTO comment 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			commentId,
+			invitationId,
+			p_commentId,
+			commentBody,
+			createUser,
+			createDate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.commentId},
+			#{item.invitationId},
+			#{item.pCommentid},
+			#{item.commentBody},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				commentId = VALUES (commentId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteCommentByCommentId">
+		DELETE FROM comment WHERE commentId = #{commentId};
+	</delete>
+
+	<update id="updateCommentByCommentId">
+		UPDATE comment
+		<set>
+			<if test="comment.commentId != null">commentId=#{comment.commentId},</if>
+			<if test="comment.invitationId != null">invitationId=#{comment.invitationId},</if>
+			<if test="comment.pCommentid != null">p_commentId=#{comment.pCommentid},</if>
+			<if test="comment.commentBody != null">commentBody=#{comment.commentBody},</if>
+			<if test="comment.createUser != null">createUser=#{comment.createUser},</if>
+			<if test="comment.createDate != null">createDate=#{comment.createDate},</if>
+			<if test="comment.isEffective != null">isEffective=#{comment.isEffective},</if>
+		</set>
+		WHERE commentId = #{commentId};	
+	</update>
+	
+	<select id="getCommentByCommentId" resultType="com.example.acm.entity.Comment">
+		SELECT 
+			<include refid="comment_field_list_alias"/> 
+		FROM 
+			comment a
+		WHERE 
+			commentId = #{commentId}
+		LIMIT 1;
+	</select>
+
+	<select id="findCommentListByCommentId" resultType="com.example.acm.entity.Comment">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<where>
+			<if test="commentId != null">
+				a.commentId = #{commentId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findCommentListByInvitationId" resultType="com.example.acm.entity.Comment">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<where>
+			<if test="invitationId != null">
+				a.invitationId = #{invitationId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findComment2MapListByCommentId" resultType="java.util.Map">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<where>
+			<if test="commentId != null">
+				a.commentId = #{commentId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findComment2MapListByInvitationId" resultType="java.util.Map">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<where>
+			<if test="invitationId != null">
+				a.invitationId = #{invitationId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findCommentList" resultType="com.example.acm.entity.Comment">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a;		
+	</select>
+	
+	<select id="findComment2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a;		
+	</select>
+	
+	<select id="countCommentListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			comment a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findCommentListByQuery" resultType="com.example.acm.entity.Comment">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countCommentMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			comment a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findCommentMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="comment_field_list_alias"/>
+		FROM 
+			comment a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="finfCommentAndSonCommtne" resultType="java.util.Map">
+		SELECT
+		a.*, c.userId, c.username, c.image, b.*
+		FROM
+		(comment a INNER JOIN  invitation b on a.invitationId=b.invitationId) INNER JOIN user c on c.userId=a.createUser
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationId != null ">
+				AND a.invitationId=#{map.invitationId}
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+			<if test="map.p_commentId != null ">
+				AND a.p_commentId=#{map.p_commentId}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+				AND b.isEffective=#{map.isEffective}
+				AND c.isEffective=#{map.isEffective}
+
+			</if>
+		</trim>
+		<if test="map.order != null ">
+			ORDER BY
+			a.${map.order} ${map.aOrS}
+		</if>
+		<if test="map.start != null ">
+			limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="countCommentAndSonCommtne" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		(comment a INNER JOIN  invitation b on a.invitationId=b.invitationId) INNER JOIN user c on c.userId=a.createUser
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationId != null ">
+				AND a.invitationId=#{map.invitationId}
+			</if>
+			<if test="map.p_commentId != null ">
+				AND a.p_commentId=#{map.p_commentId}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+	</select>
+</mapper>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.InvitationMapper">
+
+	<resultMap type="com.example.acm.entity.Invitation" id="invitationMap">
+		<result column="invitationId" property="invitationId"/>   
+		<result column="invitationTitle" property="invitationTitle"/>   
+		<result column="invitationBody" property="invitationBody"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="updateUser" property="updateUser"/>   
+		<result column="updateDate" property="updateDate"/>   
+		<result column="readNum" property="readNum"/>   
+		<result column="agreeNum" property="agreeNum"/>   
+		<result column="isFirst" property="isFirst"/>   
+		<result column="isGreate" property="isGreate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="invitation_field_list_alias">
+		a.invitationId,
+		a.invitationTitle,
+		a.invitationBody,
+		a.createUser,
+		a.createDate,
+		a.updateUser,
+		a.updateDate,
+		a.readNum,
+		a.agreeNum,
+		a.isFirst,
+		a.isGreate,
+		a.isEffective
+	</sql>
+
+	<insert id="addInvitation" useGeneratedKeys="true">
+		INSERT INTO invitation 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="invitation.invitationId != null">invitationId,</if>
+			<if test="invitation.invitationTitle != null">invitationTitle,</if>
+			<if test="invitation.invitationBody != null">invitationBody,</if>
+			<if test="invitation.createUser != null">createUser,</if>
+			<if test="invitation.createDate != null">createDate,</if>
+			<if test="invitation.updateUser != null">updateUser,</if>
+			<if test="invitation.updateDate != null">updateDate,</if>
+			<if test="invitation.readNum != null">readNum,</if>
+			<if test="invitation.agreeNum != null">agreeNum,</if>
+			<if test="invitation.isFirst != null">isFirst,</if>
+			<if test="invitation.isGreate != null">isGreate,</if>
+			<if test="invitation.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="invitation.invitationId != null">#{invitation.invitationId},</if>
+			<if test="invitation.invitationTitle != null">#{invitation.invitationTitle},</if>
+			<if test="invitation.invitationBody != null">#{invitation.invitationBody},</if>
+			<if test="invitation.createUser != null">#{invitation.createUser},</if>
+			<if test="invitation.createDate != null">#{invitation.createDate},</if>
+			<if test="invitation.updateUser != null">#{invitation.updateUser},</if>
+			<if test="invitation.updateDate != null">#{invitation.updateDate},</if>
+			<if test="invitation.readNum != null">#{invitation.readNum},</if>
+			<if test="invitation.agreeNum != null">#{invitation.agreeNum},</if>
+			<if test="invitation.isFirst != null">#{invitation.isFirst},</if>
+			<if test="invitation.isGreate != null">#{invitation.isGreate},</if>
+			<if test="invitation.isEffective != null">#{invitation.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addInvitationList" parameterType="com.example.acm.entity.Invitation">
+		INSERT INTO invitation 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			invitationId,
+			invitationTitle,
+			invitationBody,
+			createUser,
+			createDate,
+			updateUser,
+			updateDate,
+			readNum,
+			agreeNum,
+			isFirst,
+			isGreate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.invitationId},
+			#{item.invitationTitle},
+			#{item.invitationBody},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.updateUser},
+			#{item.updateDate},
+			#{item.readNum},
+			#{item.agreeNum},
+			#{item.isFirst},
+			#{item.isGreate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				invitationId = VALUES (invitationId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteInvitationByInvitationId">
+		DELETE FROM invitation WHERE invitationId = #{invitationId};
+	</delete>
+
+	<update id="updateInvitationByInvitationId">
+		UPDATE invitation
+		<set>
+			<if test="invitation.invitationId != null">invitationId=#{invitation.invitationId},</if>
+			<if test="invitation.invitationTitle != null">invitationTitle=#{invitation.invitationTitle},</if>
+			<if test="invitation.invitationBody != null">invitationBody=#{invitation.invitationBody},</if>
+			<if test="invitation.createUser != null">createUser=#{invitation.createUser},</if>
+			<if test="invitation.createDate != null">createDate=#{invitation.createDate},</if>
+			<if test="invitation.updateUser != null">updateUser=#{invitation.updateUser},</if>
+			<if test="invitation.updateDate != null">updateDate=#{invitation.updateDate},</if>
+			<if test="invitation.readNum != null">readNum=#{invitation.readNum},</if>
+			<if test="invitation.agreeNum != null">agreeNum=#{invitation.agreeNum},</if>
+			<if test="invitation.isFirst != null">isFirst=#{invitation.isFirst},</if>
+			<if test="invitation.isGreate != null">isGreate=#{invitation.isGreate},</if>
+			<if test="invitation.isEffective != null">isEffective=#{invitation.isEffective},</if>
+		</set>
+		WHERE invitationId = #{invitationId};	
+	</update>
+	
+	<select id="getInvitationByInvitationId" resultType="com.example.acm.entity.Invitation">
+		SELECT 
+			<include refid="invitation_field_list_alias"/> 
+		FROM 
+			invitation a
+		WHERE 
+			invitationId = #{invitationId}
+		LIMIT 1;
+	</select>
+
+	<select id="findInvitationListByInvitationId" resultType="com.example.acm.entity.Invitation">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a
+		<where>
+			<if test="invitationId != null">
+				a.invitationId = #{invitationId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findInvitation2MapListByInvitationId" resultType="java.util.Map">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a
+		<where>
+			<if test="invitationId != null">
+				a.invitationId = #{invitationId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findInvitationList" resultType="com.example.acm.entity.Invitation">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a;		
+	</select>
+	
+	<select id="findInvitation2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a;		
+	</select>
+	
+	<select id="countInvitationListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			invitation a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findInvitationListByQuery" resultType="com.example.acm.entity.Invitation">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countInvitationMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			invitation a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationTitle != null ">
+				AND a.invitationTitle like CONCAT('%', #{map.invitationTitle}, '%')
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser = #{map.createUser}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findInvitationMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="invitation_field_list_alias"/>
+		FROM 
+			invitation a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationTitle != null ">
+				AND a.invitationTitle like CONCAT('%', #{map.invitationTitle}, '%')
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser = #{map.createUser}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.tmpo != null ">
+			ORDER BY
+			 a.${map.tmpo} ${map.aOrS}
+		</if>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.isFirst DESC, a.isGreate DESC, a.${map.order} ${map.aOrS}
+		</if>
+		<!--<if test="map.order == null ">-->
+			<!--ORDER BY-->
+			<!--a.isFirst DESC, a.isGreate DESC-->
+		<!--</if>-->
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="conutInvitationBefore" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		invitation a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationTitle != null ">
+				AND a.invitationTitle like CONCAT('%', #{map.invitationTitle}, '%')
+			</if>
+			<if test="map.beforeTime != null ">
+				AND    #{map.beforeTime} >= a.createDate
+			</if>
+			<if test="map.isEffective != null ">
+				AND    a.isEffective = #{map.isEffective}
+			</if>
+		</trim>
+	</select>
+
+</mapper>

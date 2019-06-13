@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.AlbumPhotoMapper">
+
+	<resultMap type="com.example.acm.entity.AlbumPhoto" id="albumPhotoMap">
+		<result column="apId" property="apId"/>   
+		<result column="albumId" property="albumId"/>   
+		<result column="photoId" property="photoId"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="albumPhoto_field_list_alias">
+		a.apId,
+		a.albumId,
+		a.photoId,
+		a.createUser,
+		a.createDate,
+		a.isEffective
+	</sql>
+
+	<insert id="addAlbumPhoto" useGeneratedKeys="true">
+		INSERT INTO album_photo 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="albumPhoto.apId != null">apId,</if>
+			<if test="albumPhoto.albumId != null">albumId,</if>
+			<if test="albumPhoto.photoId != null">photoId,</if>
+			<if test="albumPhoto.createUser != null">createUser,</if>
+			<if test="albumPhoto.createDate != null">createDate,</if>
+			<if test="albumPhoto.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="albumPhoto.apId != null">#{albumPhoto.apId},</if>
+			<if test="albumPhoto.albumId != null">#{albumPhoto.albumId},</if>
+			<if test="albumPhoto.photoId != null">#{albumPhoto.photoId},</if>
+			<if test="albumPhoto.createUser != null">#{albumPhoto.createUser},</if>
+			<if test="albumPhoto.createDate != null">#{albumPhoto.createDate},</if>
+			<if test="albumPhoto.isEffective != null">#{albumPhoto.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addAlbumPhotoList" parameterType="com.example.acm.entity.AlbumPhoto">
+		INSERT INTO album_photo 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			apId,
+			albumId,
+			photoId,
+			createUser,
+			createDate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.apId},
+			#{item.albumId},
+			#{item.photoId},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				apId = VALUES (apId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteAlbumPhotoByApId">
+		DELETE FROM album_photo WHERE apId = #{apId};
+	</delete>
+
+	<update id="updateAlbumPhotoByApId">
+		UPDATE album_photo
+		<set>
+			<if test="albumPhoto.apId != null">apId=#{albumPhoto.apId},</if>
+			<if test="albumPhoto.albumId != null">albumId=#{albumPhoto.albumId},</if>
+			<if test="albumPhoto.photoId != null">photoId=#{albumPhoto.photoId},</if>
+			<if test="albumPhoto.createUser != null">createUser=#{albumPhoto.createUser},</if>
+			<if test="albumPhoto.createDate != null">createDate=#{albumPhoto.createDate},</if>
+			<if test="albumPhoto.isEffective != null">isEffective=#{albumPhoto.isEffective},</if>
+		</set>
+		WHERE apId = #{apId};	
+	</update>
+	
+	<select id="getAlbumPhotoByApId" resultType="com.example.acm.entity.AlbumPhoto">
+		SELECT 
+			<include refid="albumPhoto_field_list_alias"/> 
+		FROM 
+			album_photo a
+		WHERE 
+			apId = #{apId}
+		LIMIT 1;
+	</select>
+
+	<select id="findAlbumPhotoListByApId" resultType="com.example.acm.entity.AlbumPhoto">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a
+		<where>
+			<if test="apId != null">
+				a.apId = #{apId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAlbumPhoto2MapListByApId" resultType="java.util.Map">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a
+		<where>
+			<if test="apId != null">
+				a.apId = #{apId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAlbumPhotoList" resultType="com.example.acm.entity.AlbumPhoto">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a;		
+	</select>
+	
+	<select id="findAlbumPhoto2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a;		
+	</select>
+	
+	<select id="countAlbumPhotoListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			album_photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findAlbumPhotoListByQuery" resultType="com.example.acm.entity.AlbumPhoto">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countAlbumPhotoMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			album_photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findAlbumPhotoMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="albumPhoto_field_list_alias"/>
+		FROM 
+			album_photo a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>

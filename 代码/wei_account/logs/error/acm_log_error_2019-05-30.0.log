@@ -1,0 +1,106 @@
+2019-05-30 16:07:44.876 ERROR --- [http-nio-9999-exec-2] com.example.acm.controller.userController Line:80  - Index: 0, Size: 0
+java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+	at java.util.ArrayList.rangeCheck(ArrayList.java:657)
+	at java.util.ArrayList.get(ArrayList.java:433)
+	at com.example.acm.controller.userController.login(userController.java:66)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:496)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:790)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1468)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2019-05-30 19:13:18.122 ERROR --- [http-nio-9999-exec-7] com.example.acm.service.deal.Impl.PhotoDealImpl Line:124 - 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+### The error may exist in file [D:\ACM\acmBackT\wei_account\target\classes\mapper\PhotoMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT   a.*   FROM   photo a INNER JOIN album_photo b on a.photoId = b.photoId    WHERE  a.isEffective=?             AND b.albumId=?         ORDER BY    a.createDate DESC            limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+2019-05-30 19:18:21.287 ERROR --- [http-nio-9999-exec-1] com.example.acm.service.deal.Impl.PhotoDealImpl Line:124 - 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+### The error may exist in file [D:\ACM\acmBackT\wei_account\target\classes\mapper\PhotoMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT   a.*   FROM   photo a INNER JOIN album_photo b on a.photoId = b.photoId    WHERE  a.isEffective=?             AND b.albumId=?         ORDER BY    a.createDate DESC            limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+2019-05-30 19:19:01.238 ERROR --- [http-nio-9999-exec-5] com.example.acm.service.deal.Impl.PhotoDealImpl Line:124 - 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+### The error may exist in file [D:\ACM\acmBackT\wei_account\target\classes\mapper\PhotoMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT   a.*   FROM   photo a INNER JOIN album_photo b on a.photoId = b.photoId    WHERE  a.isEffective=?             AND b.albumId=?         ORDER BY    a.createDate DESC            limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+2019-05-30 19:20:59.485 ERROR --- [http-nio-9999-exec-2] com.example.acm.service.deal.Impl.PhotoDealImpl Line:124 - 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+### The error may exist in file [D:\ACM\acmBackT\wei_account\target\classes\mapper\PhotoMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT   a.*   FROM   photo a INNER JOIN album_photo b on a.photoId = b.photoId    WHERE  a.isEffective=?             AND b.albumId=?         ORDER BY    a.createDate DESC            limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+2019-05-30 19:22:40.131 ERROR --- [http-nio-9999-exec-8] com.example.acm.service.deal.Impl.PhotoDealImpl Line:124 - 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+### The error may exist in file [D:\ACM\acmBackT\wei_account\target\classes\mapper\PhotoMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT   a.*   FROM   photo a INNER JOIN album_photo b on a.photoId = b.photoId    WHERE  a.isEffective=?             AND b.albumId=?         ORDER BY    a.createDate DESC            limit ?,?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-10,10' at line 14
+2019-05-30 19:39:48.379 ERROR --- [http-nio-9999-exec-5] com.example.acm.conf.MyControllerAdvice Line:25  - /uploadImg--null
+2019-05-30 20:08:29.975 ERROR --- [http-nio-9999-exec-5] com.example.acm.conf.MyControllerAdvice Line:25  - /problem/problemDetail--Failed to convert value of type 'java.lang.String' to required type 'long'; nested exception is java.lang.NumberFormatException: For input string: "undefined"
+2019-05-30 20:28:14.006 ERROR --- [http-nio-9999-exec-2] com.example.acm.conf.MyControllerAdvice Line:25  - /uploadImg--null

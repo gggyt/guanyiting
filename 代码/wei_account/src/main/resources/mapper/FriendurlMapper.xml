@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.FriendurlMapper">
+
+	<resultMap type="com.example.acm.entity.Friendurl" id="friendurlMap">
+		<result column="friendurlId" property="friendurlId"/>   
+		<result column="friendTitle" property="friendTitle"/>   
+		<result column="friendBody" property="friendBody"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="updateUser" property="updateUser"/>   
+		<result column="updateDate" property="updateDate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="friendurl_field_list_alias">
+		a.friendurlId,
+		a.friendTitle,
+		a.friendBody,
+		a.createUser,
+		a.createDate,
+		a.updateUser,
+		a.updateDate,
+		a.isEffective
+	</sql>
+
+	<insert id="addFriendurl" useGeneratedKeys="true">
+		INSERT INTO friendurl 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="friendurl.friendurlId != null">friendurlId,</if>
+			<if test="friendurl.friendTitle != null">friendTitle,</if>
+			<if test="friendurl.friendBody != null">friendBody,</if>
+			<if test="friendurl.createUser != null">createUser,</if>
+			<if test="friendurl.createDate != null">createDate,</if>
+			<if test="friendurl.updateUser != null">updateUser,</if>
+			<if test="friendurl.updateDate != null">updateDate,</if>
+			<if test="friendurl.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="friendurl.friendurlId != null">#{friendurl.friendurlId},</if>
+			<if test="friendurl.friendTitle != null">#{friendurl.friendTitle},</if>
+			<if test="friendurl.friendBody != null">#{friendurl.friendBody},</if>
+			<if test="friendurl.createUser != null">#{friendurl.createUser},</if>
+			<if test="friendurl.createDate != null">#{friendurl.createDate},</if>
+			<if test="friendurl.updateUser != null">#{friendurl.updateUser},</if>
+			<if test="friendurl.updateDate != null">#{friendurl.updateDate},</if>
+			<if test="friendurl.isEffective != null">#{friendurl.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addFriendurlList" parameterType="com.example.acm.entity.Friendurl">
+		INSERT INTO friendurl 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			friendurlId,
+			friendTitle,
+			friendBody,
+			createUser,
+			createDate,
+			updateUser,
+			updateDate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.friendurlId},
+			#{item.friendTitle},
+			#{item.friendBody},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.updateUser},
+			#{item.updateDate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				friendurlId = VALUES (friendurlId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteFriendurlByFriendurlId">
+		DELETE FROM friendurl WHERE friendurlId = #{friendurlId};
+	</delete>
+
+	<update id="updateFriendurlByFriendurlId">
+		UPDATE friendurl
+		<set>
+			<if test="friendurl.friendurlId != null">friendurlId=#{friendurl.friendurlId},</if>
+			<if test="friendurl.friendTitle != null">friendTitle=#{friendurl.friendTitle},</if>
+			<if test="friendurl.friendBody != null">friendBody=#{friendurl.friendBody},</if>
+			<if test="friendurl.createUser != null">createUser=#{friendurl.createUser},</if>
+			<if test="friendurl.createDate != null">createDate=#{friendurl.createDate},</if>
+			<if test="friendurl.updateUser != null">updateUser=#{friendurl.updateUser},</if>
+			<if test="friendurl.updateDate != null">updateDate=#{friendurl.updateDate},</if>
+			<if test="friendurl.isEffective != null">isEffective=#{friendurl.isEffective},</if>
+		</set>
+		WHERE friendurlId = #{friendurlId};	
+	</update>
+	
+	<select id="getFriendurlByFriendurlId" resultType="com.example.acm.entity.Friendurl">
+		SELECT 
+			<include refid="friendurl_field_list_alias"/> 
+		FROM 
+			friendurl a
+		WHERE 
+			friendurlId = #{friendurlId}
+		LIMIT 1;
+	</select>
+
+	<select id="findFriendurlListByFriendurlId" resultType="com.example.acm.entity.Friendurl">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a
+		<where>
+			<if test="friendurlId != null">
+				a.friendurlId = #{friendurlId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findFriendurl2MapListByFriendurlId" resultType="java.util.Map">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a
+		<where>
+			<if test="friendurlId != null">
+				a.friendurlId = #{friendurlId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findFriendurlList" resultType="com.example.acm.entity.Friendurl">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a;		
+	</select>
+	
+	<select id="findFriendurl2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a;		
+	</select>
+	
+	<select id="countFriendurlListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			friendurl a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findFriendurlListByQuery" resultType="com.example.acm.entity.Friendurl">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countFriendurlMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			friendurl a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.friendTitle != null ">
+				AND a.friendTitle like CONCAT ('%', #{map.friendTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findFriendurlMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="friendurl_field_list_alias"/>
+		FROM 
+			friendurl a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.friendTitle != null ">
+				AND a.friendTitle like CONCAT ('%', #{map.friendTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>

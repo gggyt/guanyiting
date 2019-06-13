@@ -1,0 +1,22 @@
+.title{
+	padding: 10px;
+	margin: 10px;
+}
+.inputTitle{
+	padding: 10px;
+	margin: 10px;
+	background-color: #ffffff;
+}
+.inputCatalog{
+	padding: 10px;
+	margin: 10px;
+	background-color: #ffffff;
+	height: 200px;
+	min-height: 150px;
+	overflow:auto;
+}
+.push{
+	padding: 10px;
+	margin: 10px;
+	background-color: #ffffff;
+}

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.AlbumMapper">
+
+	<resultMap type="com.example.acm.entity.Album" id="albumMap">
+		<result column="albumId" property="albumId"/>   
+		<result column="albumName" property="albumName"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="coverPhotoId" property="coverPhotoId"/>   
+		<result column="description" property="description"/>   
+		<result column="isPublic" property="isPublic"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="album_field_list_alias">
+		a.albumId,
+		a.albumName,
+		a.createUser,
+		a.createDate,
+		a.coverPhotoId,
+		a.description,
+		a.isPublic,
+		a.isEffective
+	</sql>
+
+	<insert id="addAlbum" useGeneratedKeys="true">
+		INSERT INTO album 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="album.albumId != null">albumId,</if>
+			<if test="album.albumName != null">albumName,</if>
+			<if test="album.createUser != null">createUser,</if>
+			<if test="album.createDate != null">createDate,</if>
+			<if test="album.coverPhotoId != null">coverPhotoId,</if>
+			<if test="album.description != null">description,</if>
+			<if test="album.isPublic != null">isPublic,</if>
+			<if test="album.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="album.albumId != null">#{album.albumId},</if>
+			<if test="album.albumName != null">#{album.albumName},</if>
+			<if test="album.createUser != null">#{album.createUser},</if>
+			<if test="album.createDate != null">#{album.createDate},</if>
+			<if test="album.coverPhotoId != null">#{album.coverPhotoId},</if>
+			<if test="album.description != null">#{album.description},</if>
+			<if test="album.isPublic != null">#{album.isPublic},</if>
+			<if test="album.isEffective != null">#{album.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addAlbumList" parameterType="com.example.acm.entity.Album">
+		INSERT INTO album 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			albumId,
+			albumName,
+			createUser,
+			createDate,
+			coverPhotoId,
+			description,
+			isPublic,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.albumId},
+			#{item.albumName},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.coverPhotoId},
+			#{item.description},
+			#{item.isPublic},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				albumId = VALUES (albumId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteAlbumByAlbumId">
+		DELETE FROM album WHERE albumId = #{albumId};
+	</delete>
+
+	<update id="updateAlbumByAlbumId">
+		UPDATE album
+		<set>
+			<if test="album.albumId != null">albumId=#{album.albumId},</if>
+			<if test="album.albumName != null">albumName=#{album.albumName},</if>
+			<if test="album.createUser != null">createUser=#{album.createUser},</if>
+			<if test="album.createDate != null">createDate=#{album.createDate},</if>
+			<if test="album.coverPhotoId != null">coverPhotoId=#{album.coverPhotoId},</if>
+			<if test="album.description != null">description=#{album.description},</if>
+			<if test="album.isPublic != null">isPublic=#{album.isPublic},</if>
+			<if test="album.isEffective != null">isEffective=#{album.isEffective},</if>
+		</set>
+		WHERE albumId = #{albumId};	
+	</update>
+	
+	<select id="getAlbumByAlbumId" resultType="com.example.acm.entity.Album">
+		SELECT 
+			<include refid="album_field_list_alias"/> 
+		FROM 
+			album a
+		WHERE 
+			albumId = #{albumId}
+		LIMIT 1;
+	</select>
+
+	<select id="findAlbumListByAlbumId" resultType="com.example.acm.entity.Album">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a
+		<where>
+			<if test="albumId != null">
+				a.albumId = #{albumId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAlbum2MapListByAlbumId" resultType="java.util.Map">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a
+		<where>
+			<if test="albumId != null">
+				a.albumId = #{albumId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAlbumList" resultType="com.example.acm.entity.Album">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a;		
+	</select>
+	
+	<select id="findAlbum2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a;		
+	</select>
+	
+	<select id="countAlbumListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			album a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findAlbumListByQuery" resultType="com.example.acm.entity.Album">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+			<if test="map.albumNameE != null ">
+				AND a.albumName=#{map.albumNameE}
+			</if>
+			<if test="map.albumName != null ">
+				AND a.albumName like CONCAT('%', #{map.albumName}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countAlbumMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			album a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+			<if test="map.albumNameE != null ">
+				AND a.albumName=#{map.albumNameE}
+			</if>
+			<if test="map.albumName != null ">
+				AND a.albumName like CONCAT('%', #{map.albumName}, '%')
+			</if>
+			<if test="map.isPublic != null ">
+				AND a.isPublic=#{map.isPublic}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findAlbumMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="album_field_list_alias"/>
+		FROM 
+			album a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+			<if test="map.albumNameE != null ">
+				AND a.albumName=#{map.albumNameE}
+			</if>
+			<if test="map.albumName != null ">
+				AND a.albumName like CONCAT('%', #{map.albumName}, '%')
+			</if>
+			<if test="map.isPublic != null ">
+				AND a.isPublic=#{map.isPublic}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>

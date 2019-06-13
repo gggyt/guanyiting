@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.FollowMapper">
+
+	<resultMap type="com.example.acm.entity.Follow" id="followMap">
+		<result column="followId" property="followId"/>   
+		<result column="beUserId" property="beUserId"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="follow_field_list_alias">
+		a.followId,
+		a.beUserId,
+		a.createUser,
+		a.createDate,
+		a.isEffective
+	</sql>
+
+	<insert id="addFollow" useGeneratedKeys="true">
+		INSERT INTO follow 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="follow.followId != null">followId,</if>
+			<if test="follow.beUserId != null">beUserId,</if>
+			<if test="follow.createUser != null">createUser,</if>
+			<if test="follow.createDate != null">createDate,</if>
+			<if test="follow.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="follow.followId != null">#{follow.followId},</if>
+			<if test="follow.beUserId != null">#{follow.beUserId},</if>
+			<if test="follow.createUser != null">#{follow.createUser},</if>
+			<if test="follow.createDate != null">#{follow.createDate},</if>
+			<if test="follow.isEffective != null">#{follow.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addFollowList" parameterType="com.example.acm.entity.Follow">
+		INSERT INTO follow 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			followId,
+			beUserId,
+			createUser,
+			createDate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.followId},
+			#{item.beUserId},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				followId = VALUES (followId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteFollowByFollowId">
+		DELETE FROM follow WHERE followId = #{followId};
+	</delete>
+
+	<update id="updateFollowByFollowId">
+		UPDATE follow
+		<set>
+			<if test="follow.followId != null">followId=#{follow.followId},</if>
+			<if test="follow.beUserId != null">beUserId=#{follow.beUserId},</if>
+			<if test="follow.createUser != null">createUser=#{follow.createUser},</if>
+			<if test="follow.createDate != null">createDate=#{follow.createDate},</if>
+			<if test="follow.isEffective != null">isEffective=#{follow.isEffective},</if>
+		</set>
+		WHERE followId = #{followId};	
+	</update>
+	
+	<select id="getFollowByFollowId" resultType="com.example.acm.entity.Follow">
+		SELECT 
+			<include refid="follow_field_list_alias"/> 
+		FROM 
+			follow a
+		WHERE 
+			followId = #{followId}
+		LIMIT 1;
+	</select>
+
+	<select id="findFollowListByFollowId" resultType="com.example.acm.entity.Follow">
+		SELECT
+		<include refid="follow_field_list_alias"/>
+		FROM 
+			follow a
+		<where>
+			<if test="followId != null">
+				a.followId = #{followId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findFollow2MapListByFollowId" resultType="java.util.Map">
+		SELECT
+		<include refid="follow_field_list_alias"/>
+		FROM 
+			follow a
+		<where>
+			<if test="followId != null">
+				a.followId = #{followId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findFollowList" resultType="com.example.acm.entity.Follow">
+		SELECT
+		<include refid="follow_field_list_alias"/>
+		FROM 
+			follow a;		
+	</select>
+	
+	<select id="findFollow2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="follow_field_list_alias"/>
+		FROM 
+			follow a;		
+	</select>
+	
+	<select id="countFollowListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			follow a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findFollowListByQuery" resultType="com.example.acm.entity.Follow">
+		SELECT
+		<include refid="follow_field_list_alias"/>
+		FROM
+		follow a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.beUserId != null ">
+				AND a.beUserId=#{map.beUserId}
+			</if>
+			<if test="map.createUser != null">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countFollowMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			follow a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.beUserId != null ">
+				AND a.beUserId=#{map.beUserId}
+			</if>
+			<if test="map.createUser != null">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findFollowMapListByQuery" resultType="java.util.Map">
+		SELECT
+		a.*, b.*
+		FROM
+		follow a inner join user b on a.beUserId=b.userId
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.beUserId != null ">
+				AND a.beUserId=#{map.beUserId}
+			</if>
+			<if test="map.createUser != null">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>

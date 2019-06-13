@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.ReplyproblemMapper">
+
+	<resultMap type="com.example.acm.entity.Replyproblem" id="replyproblemMap">
+		<result column="problemansId" property="problemansId"/>   
+		<result column="problemId" property="problemId"/>   
+		<result column="p_problemans" property="pProblemans"/>   
+		<result column="ansUser" property="ansUser"/>   
+		<result column="ansBody" property="ansBody"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="agreeNum" property="agreeNum"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="replyproblem_field_list_alias">
+		a.problemansId,
+		a.problemId,
+		a.p_problemans,
+		a.ansUser,
+		a.ansBody,
+		a.createDate,
+		a.agreeNum,
+		a.isEffective
+	</sql>
+
+	<insert id="addReplyproblem" useGeneratedKeys="true">
+		INSERT INTO replyproblem 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="replyproblem.problemansId != null">problemansId,</if>
+			<if test="replyproblem.problemId != null">problemId,</if>
+			<if test="replyproblem.pProblemans != null">p_problemans,</if>
+			<if test="replyproblem.ansUser != null">ansUser,</if>
+			<if test="replyproblem.ansBody != null">ansBody,</if>
+			<if test="replyproblem.createDate != null">createDate,</if>
+			<if test="replyproblem.agreeNum != null">agreeNum,</if>
+			<if test="replyproblem.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="replyproblem.problemansId != null">#{replyproblem.problemansId},</if>
+			<if test="replyproblem.problemId != null">#{replyproblem.problemId},</if>
+			<if test="replyproblem.pProblemans != null">#{replyproblem.pProblemans},</if>
+			<if test="replyproblem.ansUser != null">#{replyproblem.ansUser},</if>
+			<if test="replyproblem.ansBody != null">#{replyproblem.ansBody},</if>
+			<if test="replyproblem.createDate != null">#{replyproblem.createDate},</if>
+			<if test="replyproblem.agreeNum != null">#{replyproblem.agreeNum},</if>
+			<if test="replyproblem.isEffective != null">#{replyproblem.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addReplyproblemList" parameterType="com.example.acm.entity.Replyproblem">
+		INSERT INTO replyproblem 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			problemansId,
+			problemId,
+			p_problemans,
+			ansUser,
+			ansBody,
+			createDate,
+			agreeNum,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.problemansId},
+			#{item.problemId},
+			#{item.pProblemans},
+			#{item.ansUser},
+			#{item.ansBody},
+			#{item.createDate},
+			#{item.agreeNum},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				problemansId = VALUES (problemansId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteReplyproblemByProblemansId">
+		DELETE FROM replyproblem WHERE problemansId = #{problemansId};
+	</delete>
+
+	<update id="updateReplyproblemByProblemansId">
+		UPDATE replyproblem
+		<set>
+			<if test="replyproblem.problemansId != null">problemansId=#{replyproblem.problemansId},</if>
+			<if test="replyproblem.problemId != null">problemId=#{replyproblem.problemId},</if>
+			<if test="replyproblem.pProblemans != null">p_problemans=#{replyproblem.pProblemans},</if>
+			<if test="replyproblem.ansUser != null">ansUser=#{replyproblem.ansUser},</if>
+			<if test="replyproblem.ansBody != null">ansBody=#{replyproblem.ansBody},</if>
+			<if test="replyproblem.createDate != null">createDate=#{replyproblem.createDate},</if>
+			<if test="replyproblem.agreeNum != null">agreeNum=#{replyproblem.agreeNum},</if>
+			<if test="replyproblem.isEffective != null">isEffective=#{replyproblem.isEffective},</if>
+		</set>
+		WHERE problemansId = #{problemansId};	
+	</update>
+	
+	<select id="getReplyproblemByProblemansId" resultType="com.example.acm.entity.Replyproblem">
+		SELECT 
+			<include refid="replyproblem_field_list_alias"/> 
+		FROM 
+			replyproblem a
+		WHERE 
+			problemansId = #{problemansId}
+		LIMIT 1;
+	</select>
+
+	<select id="findReplyproblemListByProblemansId" resultType="com.example.acm.entity.Replyproblem">
+		SELECT
+		<include refid="replyproblem_field_list_alias"/>
+		FROM 
+			replyproblem a
+		<where>
+			<if test="problemansId != null">
+				a.problemansId = #{problemansId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findReplyproblem2MapListByProblemansId" resultType="java.util.Map">
+		SELECT
+		<include refid="replyproblem_field_list_alias"/>
+		FROM 
+			replyproblem a
+		<where>
+			<if test="problemansId != null">
+				a.problemansId = #{problemansId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findReplyproblemList" resultType="com.example.acm.entity.Replyproblem">
+		SELECT
+		<include refid="replyproblem_field_list_alias"/>
+		FROM 
+			replyproblem a;		
+	</select>
+	
+	<select id="findReplyproblem2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="replyproblem_field_list_alias"/>
+		FROM 
+			replyproblem a;		
+	</select>
+	
+	<select id="countReplyproblemListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			replyproblem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findReplyproblemListByQuery" resultType="com.example.acm.entity.Replyproblem">
+		SELECT
+		<include refid="replyproblem_field_list_alias"/>
+		FROM 
+			replyproblem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countReplyproblemMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			replyproblem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.problemId != null ">
+				AND a.problemId=#{map.problemId}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findReplyproblemMapListByQuery" resultType="java.util.Map">
+		select a.*, b.userId, b.username, b.image
+		from replyproblem a inner join user b
+		on a.ansUser=b.userId
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.problemId != null ">
+				AND a.problemId=#{map.problemId}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>

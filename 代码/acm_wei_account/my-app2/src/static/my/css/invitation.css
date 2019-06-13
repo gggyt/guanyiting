@@ -1,0 +1,85 @@
+.bodyMain{
+	background-color: #F2F2F2;
+	padding: 10px;
+	min-height: 1000px;
+}
+.mobileBodyMain{
+    background-color: #F2F2F2;
+    padding: 10px;
+    display: block;
+    overflow:auto;
+    min-height: 800px;
+    _height: 800px;
+    padding-bottom: 10px;
+}
+.invitationMain{
+	margin: 0 auto;
+	margin-top: 40px;
+	width: 1000px;
+	padding: 10px;
+	background-color: #ffffff;
+}
+.backF2{
+    background-color: #F2F2F2;
+
+}
+.spanB{
+	font-size: 30px;
+}
+.floatR{
+	float: right;
+}
+
+.backC{
+	background-color: #ffffff;
+	padding: 10px;
+	 margin-left:5px;
+	float: left;
+}
+.backCBai{
+    background-color: #ffffff;
+}
+.backCD{
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px;
+    // margin-left:5px;
+    float: left;
+}
+.disTop{
+    background: #25bb9b;
+        font-size: 12px;
+    padding: 0 3px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 3px;
+    color: #fff;
+    margin-left: 5px;
+    display: inline-block;
+}
+.plusFine{
+    background: #ff6547;
+	font-size: 12px;
+    padding: 0 3px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 3px;
+    color: #fff;
+    margin-left: 5px;
+    display: inline-block;
+}
+.manageBtm{
+	margin-top: 13px;
+}
+.inBody{
+    padding: 10;
+    min-height: 300px;
+}
+.gutter-example .ant-row > div {
+  background: transparent;
+  border: 0;
+}
+.gutter-box {
+  background: #ffffff;
+  padding: 5px 0;
+}

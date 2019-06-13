@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.ProblemMapper">
+
+	<resultMap type="com.example.acm.entity.Problem" id="problemMap">
+		<result column="problemId" property="problemId"/>   
+		<result column="problemTitle" property="problemTitle"/>   
+		<result column="problemBody" property="problemBody"/>   
+		<result column="myAns" property="myAns"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="updateDate" property="updateDate"/>   
+		<result column="updateUser" property="updateUser"/>   
+		<result column="readNum" property="readNum"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="problem_field_list_alias">
+		a.problemId,
+		a.problemTitle,
+		a.problemBody,
+		a.myAns,
+		a.createUser,
+		a.createDate,
+		a.updateDate,
+		a.updateUser,
+		a.readNum,
+		a.isEffective
+	</sql>
+
+	<insert id="addProblem" useGeneratedKeys="true">
+		INSERT INTO problem 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="problem.problemId != null">problemId,</if>
+			<if test="problem.problemTitle != null">problemTitle,</if>
+			<if test="problem.problemBody != null">problemBody,</if>
+			<if test="problem.myAns != null">myAns,</if>
+			<if test="problem.createUser != null">createUser,</if>
+			<if test="problem.createDate != null">createDate,</if>
+			<if test="problem.updateDate != null">updateDate,</if>
+			<if test="problem.updateUser != null">updateUser,</if>
+			<if test="problem.readNum != null">readNum,</if>
+			<if test="problem.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="problem.problemId != null">#{problem.problemId},</if>
+			<if test="problem.problemTitle != null">#{problem.problemTitle},</if>
+			<if test="problem.problemBody != null">#{problem.problemBody},</if>
+			<if test="problem.myAns != null">#{problem.myAns},</if>
+			<if test="problem.createUser != null">#{problem.createUser},</if>
+			<if test="problem.createDate != null">#{problem.createDate},</if>
+			<if test="problem.updateDate != null">#{problem.updateDate},</if>
+			<if test="problem.updateUser != null">#{problem.updateUser},</if>
+			<if test="problem.readNum != null">#{problem.readNum},</if>
+			<if test="problem.isEffective != null">#{problem.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addProblemList" parameterType="com.example.acm.entity.Problem">
+		INSERT INTO problem 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			problemId,
+			problemTitle,
+			problemBody,
+			myAns,
+			createUser,
+			createDate,
+			updateDate,
+			updateUser,
+			readNum,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.problemId},
+			#{item.problemTitle},
+			#{item.problemBody},
+			#{item.myAns},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.updateDate},
+			#{item.updateUser},
+			#{item.readNum},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				problemId = VALUES (problemId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteProblemByProblemId">
+		DELETE FROM problem WHERE problemId = #{problemId};
+	</delete>
+
+	<update id="updateProblemByProblemId">
+		UPDATE problem
+		<set>
+			<if test="problem.problemId != null">problemId=#{problem.problemId},</if>
+			<if test="problem.problemTitle != null">problemTitle=#{problem.problemTitle},</if>
+			<if test="problem.problemBody != null">problemBody=#{problem.problemBody},</if>
+			<if test="problem.myAns != null">myAns=#{problem.myAns},</if>
+			<if test="problem.createUser != null">createUser=#{problem.createUser},</if>
+			<if test="problem.createDate != null">createDate=#{problem.createDate},</if>
+			<if test="problem.updateDate != null">updateDate=#{problem.updateDate},</if>
+			<if test="problem.updateUser != null">updateUser=#{problem.updateUser},</if>
+			<if test="problem.readNum != null">readNum=#{problem.readNum},</if>
+			<if test="problem.isEffective != null">isEffective=#{problem.isEffective},</if>
+		</set>
+		WHERE problemId = #{problemId};	
+	</update>
+	
+	<select id="getProblemByProblemId" resultType="com.example.acm.entity.Problem">
+		SELECT 
+			<include refid="problem_field_list_alias"/> 
+		FROM 
+			problem a
+		WHERE 
+			problemId = #{problemId}
+		LIMIT 1;
+	</select>
+
+	<select id="findProblemListByProblemId" resultType="com.example.acm.entity.Problem">
+		SELECT
+		a.*, b.username
+		FROM 
+			problem a inner join user b on a.createUser = b.userId
+		<where>
+			<if test="problemId != null">
+				a.problemId = #{problemId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findProblem2MapListByProblemId" resultType="java.util.Map">
+		SELECT
+		a.*, b.username
+		FROM
+		problem a inner join user b on a.createUser = b.userId
+		<where>
+			<if test="problemId != null">
+				a.problemId = #{problemId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findProblemList" resultType="com.example.acm.entity.Problem">
+		SELECT
+		<include refid="problem_field_list_alias"/>
+		FROM 
+			problem a;		
+	</select>
+	
+	<select id="findProblem2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="problem_field_list_alias"/>
+		FROM 
+			problem a;		
+	</select>
+	
+	<select id="countProblemListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			problem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.problemTitle != null ">
+				AND a.problemTitle like CONCAT('%', #{map.problemTitle}, '%')
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findProblemListByQuery" resultType="com.example.acm.entity.Problem">
+		SELECT
+		<include refid="problem_field_list_alias"/>
+		FROM 
+			problem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.problemTitle != null ">
+				AND a.problemTitle like CONCAT('%', #{map.problemTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countProblemMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			problem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.problemTitle != null ">
+				AND a.problemTitle like CONCAT('%', #{map.problemTitle}, '%')
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findProblemMapListByQuery" resultType="java.util.Map">
+		SELECT
+		a.*, b.username
+		FROM 
+			problem a inner join user b on a.createUser=b.userId
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.problemTitle != null ">
+				AND a.problemTitle like CONCAT('%', #{map.problemTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.createUser != null ">
+				AND a.createUser=#{map.createUser}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="conutProblemBefore" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		problem a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.invitationTitle != null ">
+				AND a.problemTitle like CONCAT('%', #{map.problemTitle}, '%')
+			</if>
+			<if test="map.beforeTime != null ">
+				AND    #{map.beforeTime} >= a.createDate
+			</if>
+			<if test="map.isEffective != null ">
+				AND    a.isEffective = #{map.isEffective}
+			</if>
+		</trim>
+	</select>
+</mapper>

@@ -1,0 +1,72 @@
+.title{
+	padding: 10px;
+	margin: 10px;
+}
+.inputTitle{
+	padding: 0px;
+	margin: 10px;
+	background-color: #ffffff;
+}
+.search{
+	padding:3px;
+	margin:5px;
+	background-color: #ffffff;
+}
+.searchF{
+	padding:3px;
+	margin:5px;
+}
+.addButton{
+	padding: 10px;
+	margin: 10px;
+	float: right;
+}
+.searchPage{
+	float: right;
+	padding:3px;
+	margin:5px;
+}
+.toolbar {
+	border: 1px solid #ccc;/*设置下拉棒*/
+}
+.w-e-text-container {
+    border: 1px solid #ccc;
+    height: 450px !important;
+}
+.font-red{
+	color: #FF0000;
+}
+.f-r{
+	float: right;
+}
+.f-l{
+	float: left;
+}
+.inline{
+	display:inline;
+	display: inline-block;
+}
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.btnpic{
+	height: 150px;
+	width: 150px;
+}
+.form{
+	margin: 10px;
+}
+.userMain{
+	margin:0 auto;
+	width: 600px;
+	margin-top: 60px;
+	background: #ffffff ;
+}
+.backgf{
+	background: #ffffff ;
+}
+
+.ofc{
+	object-fit: contain;
+}

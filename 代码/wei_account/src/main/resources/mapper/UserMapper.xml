@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.UserMapper">
+
+	<resultMap type="com.example.acm.entity.User" id="userMap">
+		<result column="auth" property="auth"/>   
+		<result column="classNum" property="classNum"/>   
+		<result column="createDay" property="createDay"/>   
+		<result column="grade" property="grade"/>   
+		<result column="image" property="image"/>   
+		<result column="isEffective" property="isEffective"/>   
+		<result column="mobile" property="mobile"/>   
+		<result column="openId" property="openId"/>   
+		<result column="password" property="password"/>   
+		<result column="realname" property="realname"/>   
+		<result column="studentId" property="studentId"/>   
+		<result column="userId" property="userId"/>   
+		<result column="username" property="username"/>
+		<result column="unionid" property="unionid"/>
+	</resultMap>
+
+
+	<sql id="user_field_list_alias">
+		a.auth,
+		a.classNum,
+		a.createDay,
+		a.grade,
+		a.image,
+		a.isEffective,
+		a.mobile,
+		a.openId,
+		a.password,
+		a.realname,
+		a.studentId,
+		a.userId,
+		a.username,
+		a.unionid
+	</sql>
+
+	<insert id="addUser" useGeneratedKeys="true">
+		INSERT INTO user 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="user.auth != null">auth,</if>
+			<if test="user.classNum != null">classNum,</if>
+			<if test="user.createDay != null">createDay,</if>
+			<if test="user.grade != null">grade,</if>
+			<if test="user.image != null">image,</if>
+			<if test="user.isEffective != null">isEffective,</if>
+			<if test="user.mobile != null">mobile,</if>
+			<if test="user.openId != null">openId,</if>
+			<if test="user.password != null">password,</if>
+			<if test="user.realname != null">realname,</if>
+			<if test="user.studentId != null">studentId,</if>
+			<if test="user.userId != null">userId,</if>
+			<if test="user.username != null">username,</if>
+			<if test="user.unionid != null">unionid,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="user.auth != null">#{user.auth},</if>
+			<if test="user.classNum != null">#{user.classNum},</if>
+			<if test="user.createDay != null">#{user.createDay},</if>
+			<if test="user.grade != null">#{user.grade},</if>
+			<if test="user.image != null">#{user.image},</if>
+			<if test="user.isEffective != null">#{user.isEffective},</if>
+			<if test="user.mobile != null">#{user.mobile},</if>
+			<if test="user.openId != null">#{user.openId},</if>
+			<if test="user.password != null">#{user.password},</if>
+			<if test="user.realname != null">#{user.realname},</if>
+			<if test="user.studentId != null">#{user.studentId},</if>
+			<if test="user.userId != null">#{user.userId},</if>
+			<if test="user.username != null">#{user.username},</if>
+			<if test="user.unionid != null">#{user.unionid},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addUserList" parameterType="com.example.acm.entity.User">
+		INSERT INTO user 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			auth,
+			classNum,
+			createDay,
+			grade,
+			image,
+			isEffective,
+			mobile,
+			openId,
+			password,
+			realname,
+			studentId,
+			userId,
+			username,
+			unionid,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.auth},
+			#{item.classNum},
+			#{item.createDay},
+			#{item.grade},
+			#{item.image},
+			#{item.isEffective},
+			#{item.mobile},
+			#{item.openId},
+			#{item.password},
+			#{item.realname},
+			#{item.studentId},
+			#{item.userId},
+			#{item.username},
+			#{item.unionid},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				userId = VALUES (userId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteUserByUserId">
+		DELETE FROM user WHERE userId = #{userId};
+	</delete>
+
+	<update id="updateUserByUserId">
+		UPDATE user
+		<set>
+			<if test="user.auth != null">auth=#{user.auth},</if>
+			<if test="user.classNum != null">classNum=#{user.classNum},</if>
+			<if test="user.createDay != null">createDay=#{user.createDay},</if>
+			<if test="user.grade != null">grade=#{user.grade},</if>
+			<if test="user.image != null">image=#{user.image},</if>
+			<if test="user.isEffective != null">isEffective=#{user.isEffective},</if>
+			<if test="user.mobile != null">mobile=#{user.mobile},</if>
+			<if test="user.openId != null">openId=#{user.openId},</if>
+			<if test="user.password != null">password=#{user.password},</if>
+			<if test="user.realname != null">realname=#{user.realname},</if>
+			<if test="user.studentId != null">studentId=#{user.studentId},</if>
+			<if test="user.userId != null">userId=#{user.userId},</if>
+			<if test="user.username != null">username=#{user.username},</if>
+			<if test="user.unionid != null">unionid=#{user.unionid},</if>
+		</set>
+		WHERE userId = #{userId};	
+	</update>
+	
+	<select id="getUserByUserId" resultType="com.example.acm.entity.User">
+		SELECT 
+			<include refid="user_field_list_alias"/> 
+		FROM 
+			user a
+		WHERE 
+			userId = #{userId}
+		LIMIT 1;
+	</select>
+
+	<select id="findUserListByUserId" resultType="com.example.acm.entity.User">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a
+		<where>
+			<if test="userId != null">
+				a.userId = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findUser2MapListByUserId" resultType="java.util.Map">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a
+		<where>
+			<if test="userId != null">
+				a.userId = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findUserList" resultType="com.example.acm.entity.User">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a;		
+	</select>
+	
+	<select id="findUser2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a;
+	</select>
+	
+	<select id="countUserListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			user a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findUserListByQuery" resultType="com.example.acm.entity.User">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+	    	<if test="map.openId != null">
+            				AND a.openId=#{map.openId}
+            			</if>
+            <if test="map.unionid != null">
+            				AND a.unionid=#{map.unionid}
+            			</if>
+			<if test="map.uId != null">
+				AND a.userId=#{map.uId}
+			</if>
+			<if test="map.mobile != null">
+				AND a.mobile=#{map.mobile}
+			</if>
+			<if test="map.username != null">
+				AND a.username=#{map.username}
+			</if>
+			<if test="map.studentId != null">
+				AND a.studentId=#{map.studentId}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="findUserListByQueryMy" resultType="com.example.acm.entity.User">
+    		SELECT
+    		<include refid="user_field_list_alias"/>
+    		FROM
+    			user a
+    		<trim prefix="WHERE" prefixOverrides="AND|OR">
+    			<if test="map.openId != null">
+    				AND a.openId=#{map.openId}
+    			</if>
+    			<if test="map.uId != null">
+                    AND a.userId=#{map.uId}
+                </if>
+    			<if test="map.mobile != null">
+    				AND a.mobile=#{map.mobile}
+    			</if>
+    			<if test="map.username != null">
+    				AND a.username like CONCAT ('%', #{map.username}, '%')
+    			</if>
+    			<if test="map.studentId != null">
+    				AND a.studentId=#{map.studentId}
+    			</if>
+    			<if test="map.isEffective != null ">
+    				AND a.isEffective=#{map.isEffective}
+    			</if>
+    		</trim>
+    		<if test="map.order != null ">
+    		ORDER BY
+    			a.${map.order} ${map.aOrS}
+    		</if>
+    		<if test="map.start != null ">
+    		limit #{map.start},#{map.limit}
+    		</if>
+    	</select>
+
+	<select id="countUserMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			user a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                    			<if test="map.uId != null">
+                    				AND a.userId=#{map.uId}
+                    			</if>
+                    			<if test="map.mobile != null">
+                    				AND a.mobile=#{map.mobile}
+                    			</if>
+                    			<if test="map.username != null">
+                    				AND a.username like CONCAT ('%', #{map.username}, '%')
+                    			</if>
+                    			<if test="map.studentId != null">
+                    				AND a.studentId=#{map.studentId}
+                    			</if>
+                    			<if test="map.isEffective != null ">
+                    				AND a.isEffective=#{map.isEffective}
+                    			</if>
+                    		</trim>
+                    		<if test="map.order != null ">
+                    		ORDER BY
+                    			a.${map.order} ${map.aOrS}
+                    		</if>
+                    		<if test="map.start != null ">
+                    		limit #{map.start},#{map.limit}
+                    		</if>
+	</select>
+	
+	<select id="findUserMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="user_field_list_alias"/>
+		FROM 
+			user a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+            			<if test="map.uId != null">
+            				AND a.userId=#{map.uId}
+            			</if>
+            			<if test="map.mobile != null">
+            				AND a.mobile=#{map.mobile}
+            			</if>
+            			<if test="map.username != null">
+            				AND a.username like CONCAT ('%', #{map.username}, '%')
+            			</if>
+            			<if test="map.studentId != null">
+            				AND a.studentId=#{map.studentId}
+            			</if>
+            			<if test="map.isEffective != null ">
+            				AND a.isEffective=#{map.isEffective}
+            			</if>
+            		</trim>
+            		<if test="map.order != null ">
+            		ORDER BY
+            			a.${map.order} ${map.aOrS}
+            		</if>
+            		<if test="map.start != null ">
+            		limit #{map.start},#{map.limit}
+            		</if>
+	</select>
+
+	<select id="findUserByCompetitionId" resultType="java.util.Map">
+    		SELECT
+    		a.*, b.createDate, b.competitionId, c.competitionTitle
+    		FROM
+    			(user a inner join applycompetition b on a.userId=b.joinUser)
+                INNER JOIN competition c on c.competitionId=b.competitionId
+    		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                            <if test="map.competitionId != null ">
+                                 AND c.competitionId=#{map.competitionId}
+                            </if>
+                			<if test="map.isEffective != null ">
+                				AND a.isEffective=#{map.isEffective}
+                			</if>
+                			<if test="map.isEffective != null ">
+                                AND b.isEffective=#{map.isEffective}
+                            </if>
+                            <if test="map.isEffective != null ">
+                                AND c.isEffective=#{map.isEffective}
+                            </if>
+                		</trim>
+                		<if test="map.order != null ">
+                		ORDER BY
+                			b.${map.order} ${map.aOrS}
+                		</if>
+                		<if test="map.start != null ">
+                		limit #{map.start},#{map.limit}
+                		</if>
+    	</select>
+    	<select id="countUserByCompetitionId" resultType="java.lang.Integer">
+            		SELECT
+            		count(*)
+            		FROM
+            			(user a inner join applycompetition b on a.userId=b.joinUser)
+                        INNER JOIN competition c on c.competitionId=b.competitionId
+            		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                                    <if test="map.competitionId != null ">
+                                         AND c.competitionId=#{map.competitionId}
+                                    </if>
+                        			<if test="map.isEffective != null ">
+                        				AND a.isEffective=#{map.isEffective}
+                        			</if>
+                        			<if test="map.isEffective != null ">
+                                        AND b.isEffective=#{map.isEffective}
+                                    </if>
+                                    <if test="map.isEffective != null ">
+                                        AND c.isEffective=#{map.isEffective}
+                                    </if>
+                        		</trim>
+
+            	</select>
+     <select id="findUserByLectureId" resultType="java.util.Map">
+         		SELECT
+         		a.*, b.createDate, b.LectureId, c.lectureTitle
+         		FROM
+         			(user a inner join applylecture b on a.userId=b.joinUser)
+                     INNER JOIN lecture c on c.lectureId=b.lectureId
+         		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                                 <if test="map.lectureId != null ">
+                                      AND c.lectureId=#{map.lectureId}
+                                 </if>
+                     			<if test="map.isEffective != null ">
+                     				AND a.isEffective=#{map.isEffective}
+                     			</if>
+                     			<if test="map.isEffective != null ">
+                                     AND b.isEffective=#{map.isEffective}
+                                 </if>
+                                 <if test="map.isEffective != null ">
+                                     AND c.isEffective=#{map.isEffective}
+                                 </if>
+                     		</trim>
+                     		<if test="map.order != null ">
+                     		ORDER BY
+                     			b.${map.order} ${map.aOrS}
+                     		</if>
+                     		<if test="map.start != null ">
+                     		limit #{map.start},#{map.limit}
+                     		</if>
+     </select>
+     <select id="countUserByLectureId" resultType="java.lang.Integer">
+                 		SELECT
+                 		count(*)
+                 		FROM
+                 			(user a inner join applylecture b on a.userId=b.joinUser)
+                                                 INNER JOIN lecture c on c.lectureId=b.LectureId
+                 		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                                         <if test="map.lectureId != null ">
+                                              AND c.lectureId=#{map.lectureId}
+                                         </if>
+                             			<if test="map.isEffective != null ">
+                             				AND a.isEffective=#{map.isEffective}
+                             			</if>
+                             			<if test="map.isEffective != null ">
+                                             AND b.isEffective=#{map.isEffective}
+                                         </if>
+                                         <if test="map.isEffective != null ">
+                                             AND c.isEffective=#{map.isEffective}
+                                         </if>
+                             		</trim>
+
+
+                 	</select>
+
+       <select id="findUserBuImpressionSort" resultType="java.util.Map">
+               		select aa.* from user aa LEFT JOIN impression bb on aa.userId=bb.imUser
+               		<trim prefix="WHERE" prefixOverrides="AND|OR">
+                                                             <if test="map.isEffective != null ">
+                                                                  AND aa.isEffective=#{map.isEffective}
+                                                             </if>
+                                                 			<if test="map.username != null ">
+                                                 				AND aa.username like CONCAT ('%', #{map.username}, '%')
+                                                 			</if>
+
+                     </trim>
+                    group by aa.userId order by (COALESCE(sum(bb.agreeNum),0)+count(bb.agreeNum)*0.1) DESC
+                    <if test="map.start != null ">
+                                         		limit #{map.start},#{map.limit}
+                    </if>
+           </select>
+</mapper>

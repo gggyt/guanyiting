@@ -1,0 +1,59 @@
+.main{
+	width: 1000px;
+	margin:0 auto;
+	padding: 10px;
+	background-color: #ffffff;
+	min-height: 600px;
+}
+.card{
+	margin:30px;
+	float: left;
+}
+.img{
+	padding: 10px;
+	width: 150px;
+	height: 150px;
+	object-fit: contain;
+}
+.searchPage{
+	float: right;
+	padding:3px;
+	margin:5px;
+}
+/* tile uploaded pictures */
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
+}
+.upload-list-inline .ant-upload-animate-enter {
+  animation-name: uploadAnimateInlineIn;
+}
+.upload-list-inline .ant-upload-animate-leave {
+  animation-name: uploadAnimateInlineOut;
+}
+.albumTitle{
+	padding: 10px;
+	width: 300;
+}
+.imageD{
+		overflow:hidden;
+}
+.iamgeD .imag{
+	padding: 10px;
+	width: 150px;
+	height: 150px;
+	object-fit: contain;
+}
+.imageD .btn{
+	right: 0px;
+}
+.deleteBtn{
+	padding-top:37px;
+	float: right;
+}
+.searchPage{
+	float: right;
+	padding:3px;
+	margin:5px;
+}

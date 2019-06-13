@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.LectureMapper">
+
+	<resultMap type="com.example.acm.entity.Lecture" id="lectureMap">
+		<result column="lectureId" property="lectureId"/>   
+		<result column="lectureTitle" property="lectureTitle"/>   
+		<result column="lectureBody" property="lectureBody"/>   
+		<result column="createUser" property="createUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="updateUser" property="updateUser"/>   
+		<result column="updateDate" property="updateDate"/>   
+		<result column="isDone" property="isDone"/>   
+		<result column="isFirst" property="isFirst"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="lecture_field_list_alias">
+		a.lectureId,
+		a.lectureTitle,
+		a.lectureBody,
+		a.createUser,
+		a.createDate,
+		a.updateUser,
+		a.updateDate,
+		a.isDone,
+		a.isFirst,
+		a.isEffective
+	</sql>
+
+	<insert id="addLecture" useGeneratedKeys="true">
+		INSERT INTO lecture 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="lecture.lectureId != null">lectureId,</if>
+			<if test="lecture.lectureTitle != null">lectureTitle,</if>
+			<if test="lecture.lectureBody != null">lectureBody,</if>
+			<if test="lecture.createUser != null">createUser,</if>
+			<if test="lecture.createDate != null">createDate,</if>
+			<if test="lecture.updateUser != null">updateUser,</if>
+			<if test="lecture.updateDate != null">updateDate,</if>
+			<if test="lecture.isDone != null">isDone,</if>
+			<if test="lecture.isFirst != null">isFirst,</if>
+			<if test="lecture.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="lecture.lectureId != null">#{lecture.lectureId},</if>
+			<if test="lecture.lectureTitle != null">#{lecture.lectureTitle},</if>
+			<if test="lecture.lectureBody != null">#{lecture.lectureBody},</if>
+			<if test="lecture.createUser != null">#{lecture.createUser},</if>
+			<if test="lecture.createDate != null">#{lecture.createDate},</if>
+			<if test="lecture.updateUser != null">#{lecture.updateUser},</if>
+			<if test="lecture.updateDate != null">#{lecture.updateDate},</if>
+			<if test="lecture.isDone != null">#{lecture.isDone},</if>
+			<if test="lecture.isFirst != null">#{lecture.isFirst},</if>
+			<if test="lecture.isEffective != null">#{lecture.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addLectureList" parameterType="com.example.acm.entity.Lecture">
+		INSERT INTO lecture 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			lectureId,
+			lectureTitle,
+			lectureBody,
+			createUser,
+			createDate,
+			updateUser,
+			updateDate,
+			isDone,
+			isFirst,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.lectureId},
+			#{item.lectureTitle},
+			#{item.lectureBody},
+			#{item.createUser},
+			#{item.createDate},
+			#{item.updateUser},
+			#{item.updateDate},
+			#{item.isDone},
+			#{item.isFirst},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				lectureId = VALUES (lectureId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteLectureByLectureId">
+		DELETE FROM lecture WHERE lectureId = #{lectureId};
+	</delete>
+
+	<update id="updateLectureByLectureId">
+		UPDATE lecture
+		<set>
+			<if test="lecture.lectureId != null">lectureId=#{lecture.lectureId},</if>
+			<if test="lecture.lectureTitle != null">lectureTitle=#{lecture.lectureTitle},</if>
+			<if test="lecture.lectureBody != null">lectureBody=#{lecture.lectureBody},</if>
+			<if test="lecture.createUser != null">createUser=#{lecture.createUser},</if>
+			<if test="lecture.createDate != null">createDate=#{lecture.createDate},</if>
+			<if test="lecture.updateUser != null">updateUser=#{lecture.updateUser},</if>
+			<if test="lecture.updateDate != null">updateDate=#{lecture.updateDate},</if>
+			<if test="lecture.isDone != null">isDone=#{lecture.isDone},</if>
+			<if test="lecture.isFirst != null">isFirst=#{lecture.isFirst},</if>
+			<if test="lecture.isEffective != null">isEffective=#{lecture.isEffective},</if>
+		</set>
+		WHERE lectureId = #{lectureId};	
+	</update>
+	
+	<select id="getLectureByLectureId" resultType="com.example.acm.entity.Lecture">
+		SELECT 
+			<include refid="lecture_field_list_alias"/> 
+		FROM 
+			lecture a
+		WHERE 
+			lectureId = #{lectureId}
+		LIMIT 1;
+	</select>
+
+	<select id="findLectureListByLectureId" resultType="com.example.acm.entity.Lecture">
+		SELECT
+		<include refid="lecture_field_list_alias"/>
+		FROM 
+			lecture a
+		<where>
+			<if test="lectureId != null">
+				a.lectureId = #{lectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findLecture2MapListByLectureId" resultType="java.util.Map">
+		SELECT
+		<include refid="lecture_field_list_alias"/>
+		FROM 
+			lecture a
+		<where>
+			<if test="lectureId != null">
+				a.lectureId = #{lectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findLectureList" resultType="com.example.acm.entity.Lecture">
+		SELECT
+		<include refid="lecture_field_list_alias"/>
+		FROM 
+			lecture a;		
+	</select>
+	
+	<select id="findLecture2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="lecture_field_list_alias"/>
+		FROM 
+			lecture a;		
+	</select>
+	
+	<select id="countLectureListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			lecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.lectureTitle != null ">
+				AND a.lectureTitle like CONCAT('%',#{map.lectureTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+			<if test="map.isDone != null ">
+				AND a.isDone=#{map.isDone}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findLectureListByQuery" resultType="com.example.acm.entity.Lecture">
+		SELECT
+		<include refid="lecture_field_list_alias"/>
+		FROM 
+			lecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countLectureMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			lecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findLectureMapListByQuery" resultType="java.util.Map">
+		SELECT
+		a.*, b.username
+		FROM 
+			lecture a inner join user b on a.createUser=b.userId
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.lectureTitle != null ">
+				AND a.lectureTitle like CONCAT('%',#{map.lectureTitle}, '%')
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+
+	<select id="findLectureMapListByUser" resultType="java.util.Map">
+		SELECT
+		a.*, b.*
+		FROM
+		lecture a inner join applylecture b
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			AND a.LectureId = b.lectureId
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective}
+				AND b.isEffective=#{map.isEffective}
+			</if>
+			<if test="map.joinUser != null ">
+				AND b.joinUser=#{map.joinUser}
+			</if>
+		</trim>
+		<if test="map.order != null ">
+			ORDER BY
+			a.${map.order} ${map.aOrS}
+		</if>
+		<if test="map.start != null ">
+			limit #{map.start},#{map.limit}
+		</if>
+	</select>
+</mapper>

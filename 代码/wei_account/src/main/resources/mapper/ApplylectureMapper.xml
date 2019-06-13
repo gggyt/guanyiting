@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.acm.mapper.ApplylectureMapper">
+
+	<resultMap type="com.example.acm.entity.Applylecture" id="applylectureMap">
+		<result column="applyLectureId" property="applyLectureId"/>   
+		<result column="LectureId" property="lectureId"/>   
+		<result column="joinUser" property="joinUser"/>   
+		<result column="createDate" property="createDate"/>   
+		<result column="isEffective" property="isEffective"/>   
+	</resultMap>
+
+	<sql id="applylecture_field_list_alias">
+		a.applyLectureId,
+		a.LectureId,
+		a.joinUser,
+		a.createDate,
+		a.isEffective
+	</sql>
+
+	<insert id="addApplylecture" useGeneratedKeys="true">
+		INSERT INTO applylecture 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="applylecture.applyLectureId != null">applyLectureId,</if>
+			<if test="applylecture.lectureId != null">LectureId,</if>
+			<if test="applylecture.joinUser != null">joinUser,</if>
+			<if test="applylecture.createDate != null">createDate,</if>
+			<if test="applylecture.isEffective != null">isEffective,</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="applylecture.applyLectureId != null">#{applylecture.applyLectureId},</if>
+			<if test="applylecture.lectureId != null">#{applylecture.lectureId},</if>
+			<if test="applylecture.joinUser != null">#{applylecture.joinUser},</if>
+			<if test="applylecture.createDate != null">#{applylecture.createDate},</if>
+			<if test="applylecture.isEffective != null">#{applylecture.isEffective},</if>
+		</trim>
+	</insert>
+	
+	<insert id="addApplylectureList" parameterType="com.example.acm.entity.Applylecture">
+		INSERT INTO applylecture 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			applyLectureId,
+			LectureId,
+			joinUser,
+			createDate,
+			isEffective,
+		</trim>
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.applyLectureId},
+			#{item.lectureId},
+			#{item.joinUser},
+			#{item.createDate},
+			#{item.isEffective},
+		</trim>
+		</foreach>
+		ON DUPLICATE KEY UPDATE 
+		<trim prefix="" suffix="" suffixOverrides=",">
+				applyLectureId = VALUES (applyLectureId),
+		</trim>
+	</insert>
+	
+	<delete id="deleteApplylectureByApplyLectureId">
+		DELETE FROM applylecture WHERE applyLectureId = #{applyLectureId};
+	</delete>
+
+	<update id="updateApplylectureByApplyLectureId">
+		UPDATE applylecture
+		<set>
+			<if test="applylecture.applyLectureId != null">applyLectureId=#{applylecture.applyLectureId},</if>
+			<if test="applylecture.lectureId != null">LectureId=#{applylecture.lectureId},</if>
+			<if test="applylecture.joinUser != null">joinUser=#{applylecture.joinUser},</if>
+			<if test="applylecture.createDate != null">createDate=#{applylecture.createDate},</if>
+			<if test="applylecture.isEffective != null">isEffective=#{applylecture.isEffective},</if>
+		</set>
+		WHERE applyLectureId = #{applyLectureId};	
+	</update>
+	
+	<select id="getApplylectureByApplyLectureId" resultType="com.example.acm.entity.Applylecture">
+		SELECT 
+			<include refid="applylecture_field_list_alias"/> 
+		FROM 
+			applylecture a
+		WHERE 
+			applyLectureId = #{applyLectureId}
+		LIMIT 1;
+	</select>
+
+	<select id="findApplylectureListByApplyLectureId" resultType="com.example.acm.entity.Applylecture">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<where>
+			<if test="applyLectureId != null">
+				a.applyLectureId = #{applyLectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findApplylectureListByLectureId" resultType="com.example.acm.entity.Applylecture">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<where>
+			<if test="lectureId != null">
+				a.lectureId = #{lectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findApplylecture2MapListByApplyLectureId" resultType="java.util.Map">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<where>
+			<if test="applyLectureId != null">
+				a.applyLectureId = #{applyLectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findApplylecture2MapListByLectureId" resultType="java.util.Map">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<where>
+			<if test="lectureId != null">
+				a.lectureId = #{lectureId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findApplylectureList" resultType="com.example.acm.entity.Applylecture">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a;		
+	</select>
+	
+	<select id="findApplylecture2MapList" resultType="java.util.Map">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a;		
+	</select>
+	
+	<select id="countApplylectureListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			applylecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findApplylectureListByQuery" resultType="com.example.acm.entity.Applylecture">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.lectureId != null ">
+				AND a.lectureId=#{map.lectureId}
+			</if>
+			<if test="map.joinUser != null ">
+				AND a.joinUser=#{map.joinUser}
+			</if>
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+	<select id="countApplylectureMapListByQuery" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM 
+			applylecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="findApplylectureMapListByQuery" resultType="java.util.Map">
+		SELECT
+		<include refid="applylecture_field_list_alias"/>
+		FROM 
+			applylecture a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="map.isEffective != null ">
+				AND a.isEffective=#{map.isEffective} 
+			</if>
+		</trim>
+		<if test="map.order != null ">
+		ORDER BY 
+			a.${map.order} ${map.aOrS} 
+		</if>
+		<if test="map.start != null ">
+		limit #{map.start},#{map.limit}
+		</if>
+	</select>
+	
+</mapper>
